@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+LF=$(printf '\\\012_')
+LF=${LF%_}
+
+
+case $1 in
+  "back" ) osascript -e 'tell application "iTunes"' -e 'back track' -e 'end tell';;
+  "pause" ) osascript -e 'tell application "iTunes"' -e 'pause' -e 'end tell' ;;
+  "play" ) osascript -e 'tell application "iTunes"' -e 'play' -e 'end tell' ;;
+  "get-current-track-name" ) osascript -e 'tell application "iTunes"' -e 'name of current track' -e 'end tell' ;;
+  "get-current-album-name" ) osascript -e 'tell application "iTunes"' -e 'album of current track' -e 'end tell' ;;
+  "get-is-current-track-playing" ) osascript -e 'tell application "iTunes"' -e 'player state' -e 'end tell' ;;
+  "get-current-track-artist" ) osascript -e 'tell application "iTunes"' -e 'artist of current track' -e 'end tell' ;;
+  "get-list-of-current-album" ) 
+    songs=$(osascript $HOME/src/terminal/ctunes/get-list-of-current-album.scpt)
+    echo $songs | sed -e 's/\\\\\\/'"$LF"'/g' | fzf-tmux
+   ;;
+  "echo" )
+    echo "1"
+    echo "2"
+    echo "3"
+    echo "4"
+    echo "5"
+    sleep 1
+    i=3
+    echo -n "\e[${i}F\e[0KUNKO\e[${i}E"
+  ;;
+  * ) echo "oops!" ;;
+esac
